@@ -7,35 +7,40 @@ Feature: Complete challenge
 
   Scenario: Successfully process messages
     Given I receive the following requests:
-      | X1, 0, 1  |
-      | X2, 5, 6  |
-    When I go live with an implementation that adds two numbers
+      | X1, sum, 0, 1     |
+      | X2, increment, 3  |
+    When I go live with the following implementations:
+      | sum       | adds two numbers |
+      | increment | increment number |
     Then the client should consume all requests
     And the client should publish the following responses:
-      | X1, 1    |
-      | X2, 11   |
+      | X1, 1   |
+      | X2, 4   |
 
 
   Scenario: Display requests and response
     Given I receive the following requests:
-      | X1, 0, 1  |
-    When I go live with an implementation that adds two numbers
+      | X1, sum, 0, 1  |
+    When I go live with the following implementations:
+      | sum       | adds two numbers |
     Then the client should display to console:
-      | id = X1, req = [0, 1], resp = 1  |
+      | id = X1, req = sum(0, 1), resp = 1  |
 
 
   Scenario: Handle null responses
     Given I receive the following requests:
-      | X1, 0, 1  |
-    When I go live with an implementation that returns null
+      | X1, sum, 0, 1  |
+    When I go live with the following implementations:
+      | sum       |  returns null    |
     Then the client should not consume any request
     And the client should not publish any response
 
 
   Scenario: Handle exceptions
     Given I receive the following requests:
-      | X1, 0, 1  |
-    When I go live with an implementation that throws exception
+      | X1, sum, 0, 1  |
+    When I go live with the following implementations:
+      | sum       |  throws exception  |
     Then the client should not consume any request
     And the client should not publish any response
 
@@ -45,7 +50,8 @@ Feature: Complete challenge
 
   Scenario: Exit gracefully is broker not available
     Given the broker is not available
-    When I go live with an implementation that is valid
+    When I go live with the following implementations:
+      | some_method       |  some logic   |
     Then I should get no exception
 
 
@@ -54,18 +60,20 @@ Feature: Complete challenge
 
   Scenario: Trial run does not count
     Given I receive the following requests:
-      | X1, 0, 1  |
-      | X2, 5, 6  |
-    When I do a trial run with an implementation that adds two numbers
+      | X1, sum, 0, 1  |
+      | X2, sum, 5, 6  |
+    When I do a trial run with the following implementations:
+      | sum       | adds two numbers |
     Then the client should not consume any request
     And the client should not publish any response
 
   Scenario: Trial run displays first message
     Given I receive the following requests:
-      | X1, 0, 1  |
-      | X2, 5, 6  |
-    When I do a trial run with an implementation that adds two numbers
+      | X1, sum, 0, 1  |
+      | X2, sum, 5, 6  |
+    When I do a trial run with the following implementations:
+      | sum       | adds two numbers |
     Then the client should display to console:
-      | id = X1, req = [0, 1], resp = 1  |
+      | id = X1, req = sum(0, 1), resp = 1  |
     But the client should not display to console:
-      | id = X2, req = [5, 6], resp = 11  |
+      | id = X2, req = sum(5, 6), resp = 11  |
