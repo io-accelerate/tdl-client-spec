@@ -5,7 +5,7 @@ To include the spec in your client:
 
 ```bash
 export SPEC_LOCATION=./src/test/resources/tdl/client/
-export SPEC_VERSION=v0.2
+export SPEC_VERSION=v0.3
 
 # Checkout
 git submodule add git@github.com:julianghionoiu/tdl-client-spec.git $SPEC_LOCATION
