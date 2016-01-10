@@ -100,37 +100,7 @@ Feature: Complete challenge
 
   Scenario: Exit gracefully is broker not available
     Given the broker is not available
-<<<<<<< HEAD
-    When I go live with the following implementations:
-      | some_method       |  some logic   |
-    Then I should get no exception
-
-
-  #  Trial runs
-  #DEBT: Should be handled as a separate feature
-
-  Scenario: Trial run does not count
-    Given I receive the following requests:
-      | {"method":"sum","params":[0,1],"id":"X1"} |
-      | {"method":"sum","params":[5,6],"id":"X1"} |
-    When I do a trial run with the following implementations:
-      | sum       | adds two numbers |
-    Then the client should not consume any request
-    And the client should not publish any response
-
-  Scenario: Trial run displays first message
-    Given I receive the following requests:
-      | {"method":"sum","params":[0,1],"id":"X1"} |
-      | {"method":"sum","params":[5,6],"id":"X1"} |
-    When I do a trial run with the following implementations:
-      | sum       | adds two numbers |
-    Then the client should display to console:
-      | id = X1, req = sum(0, 1), resp = 1  |
-    But the client should not display to console:
-      | id = X2, req = sum(5, 6), resp = 11  |
-=======
     When I go live with the following processing rules:
       |   Method     |      Call        |  Action           |
       | some_method  |  some logic      | publish           |
     Then I should get no exception
->>>>>>> e36a822... Allow user to control the client through client actions
