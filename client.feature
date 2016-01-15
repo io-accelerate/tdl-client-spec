@@ -67,7 +67,7 @@ Feature: Complete challenge
       |   Method     |      Call        |  Action           |
       | sum          | add two numbers  | stop              |
     Then the client should display to console:
-      | id = X1, req = sum(1, 2), resp = 3 (NOT PUBLISHED) |
+      | id = X1, req = sum(1, 2), resp = 3, (NOT PUBLISHED) |
 
 
   #  Handle edge cases
@@ -92,7 +92,7 @@ Feature: Complete challenge
     Then the client should not consume any request
     And the client should not publish any response
     And the client should display to console:
-      | id = X1, req = sum(0, 1), resp = empty (NOT PUBLISHED) |
+      | id = X1, req = sum(0, 1), resp = empty, (NOT PUBLISHED) |
 
 
   #  Connections problems
