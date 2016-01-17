@@ -48,7 +48,7 @@ Feature: Complete challenge
 
   #  Display
 
-  Scenario: Should display published requests and response
+  Scenario: Display requests and responses
     Given I receive the following requests:
       | {"method":"sum","params":[1,2],"id":"X1"}      |
       | {"method":"increment","params":[3],"id":"X2"}  |
@@ -60,7 +60,7 @@ Feature: Complete challenge
       | id = X1, req = sum(1, 2), resp = 3     |
       | id = X2, req = increment(3), resp = 4  |
 
-  Scenario: Should flag unpublished requests and response
+  Scenario: Display label next to unpublished responses
     Given I receive the following requests:
       | {"method":"sum","params":[1,2],"id":"X1"}      |
     When I go live with the following processing rules:
@@ -92,11 +92,21 @@ Feature: Complete challenge
     Then the client should not consume any request
     And the client should not publish any response
     And the client should display to console:
-      | id = X1, req = sum(0, 1), resp = empty, (NOT PUBLISHED) |
+      | id = X1, req = sum(0, 1), error = user implementation raised exception, (NOT PUBLISHED) |
+
+
+  Scenario: Should display informative message if method not registered
+    Given I receive the following requests:
+      | {"method":"random","params":[2],"id":"X1"} |
+    When I go live with the following processing rules:
+      |   Method     |      Call        |  Action           |
+      | sum          | add two numbers  | publish           |
+    Then the client should not consume any request
+    And the client should display to console:
+      | id = X1, req = random(2), error = method "random" did not match any processing rule, (NOT PUBLISHED) |
 
 
   #  Connections problems
-  #DEBT: Should be handled as a separate feature
 
   Scenario: Exit gracefully is broker not available
     Given the broker is not available
@@ -104,3 +114,16 @@ Feature: Complete challenge
       |   Method     |      Call        |  Action           |
       | some_method  |  some logic      | publish           |
     Then I should get no exception
+    And the client should display to console:
+      | There was a problem processing messages |
+
+
+  Scenario: Exit gracefully if malformed message is received
+    Given I receive the following requests:
+      | malformed_request |
+    When I go live with the following processing rules:
+      |   Method     |      Call        |  Action           |
+      | some_method  |  some logic      | publish           |
+    Then I should get no exception
+    And the client should display to console:
+      | Invalid message format |
