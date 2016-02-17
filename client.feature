@@ -57,8 +57,8 @@ Feature: Complete challenge
       | sum          | add two numbers  | publish           |
       | increment    | increment number | publish and stop  |
     Then the client should display to console:
-      | id = X1, req = sum("1", "2"), resp = 3   |
-      | id = X2, req = increment("3"), resp = 4  |
+      | id = X1, req = sum(1, 2), resp = 3   |
+      | id = X2, req = increment(3), resp = 4  |
 
   Scenario: Display label next to unpublished responses
     Given I receive the following requests:
@@ -67,7 +67,7 @@ Feature: Complete challenge
       |   Method     |      Call        |  Action           |
       | sum          | add two numbers  | stop              |
     Then the client should display to console:
-      | id = X1, req = sum("1", "2"), resp = 3, (NOT PUBLISHED) |
+      | id = X1, req = sum(1, 2), resp = 3, (NOT PUBLISHED) |
 
   Scenario: Handle multi-line request and response
     Given I receive the following requests:
@@ -103,7 +103,7 @@ Feature: Complete challenge
     Then the client should not consume any request
     And the client should not publish any response
     And the client should display to console:
-      | id = X1, req = sum("0", "1"), error = "user implementation raised exception", (NOT PUBLISHED) |
+      | id = X1, req = sum(0, 1), error = "user implementation raised exception", (NOT PUBLISHED) |
 
 
   Scenario: Should display informative message if method not registered
@@ -114,7 +114,7 @@ Feature: Complete challenge
       | sum          | add two numbers  | publish           |
     Then the client should not consume any request
     And the client should display to console:
-      | id = X1, req = random("2"), error = "method 'random' did not match any processing rule", (NOT PUBLISHED) |
+      | id = X1, req = random(2), error = "method 'random' did not match any processing rule", (NOT PUBLISHED) |
 
 
   #  Connections problems
