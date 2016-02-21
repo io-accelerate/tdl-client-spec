@@ -20,7 +20,6 @@ Feature: Complete challenge
       | {"result":3,"error":null,"id":"X1"} |
       | {"result":4,"error":null,"id":"X2"} |
 
-
   Scenario: Process message then stop
     Given I receive the following requests:
       | {"method":"sum","params":[1,2],"id":"X1"}      |
@@ -31,7 +30,6 @@ Feature: Complete challenge
       | increment    | increment number | publish           |
     Then the client should not consume any request
     And the client should not publish any response
-
 
   Scenario: Process messages then publish and stop
     Given I receive the following requests:
@@ -95,7 +93,6 @@ Feature: Complete challenge
     And the client should publish the following responses:
       | {"result":null,"error":null,"id":"X1"} |
 
-
   Scenario: Should stop on exceptions
     Given I receive the following requests:
       | {"method":"sum","params":[0,1],"id":"X1"} |
@@ -106,7 +103,6 @@ Feature: Complete challenge
     And the client should not publish any response
     And the client should display to console:
       | id = X1, req = sum(0, 1), error = "user implementation raised exception", (NOT PUBLISHED) |
-
 
   Scenario: Should display informative message if method not registered
     Given I receive the following requests:
@@ -130,7 +126,6 @@ Feature: Complete challenge
     And the client should display to console:
       | There was a problem processing messages |
 
-
   Scenario: Exit gracefully if malformed message is received
     Given I receive the following requests:
       | malformed_request |
@@ -140,3 +135,10 @@ Feature: Complete challenge
     Then I should get no exception
     And the client should display to console:
       | Invalid message format |
+
+  Scenario: Should display informative message when starting and stopping client
+    When I go live with the following processing rules:
+      |   Method     |      Call        |  Action           |
+    Then the client should display to console:
+      | Starting client |
+      | Stopping client |
