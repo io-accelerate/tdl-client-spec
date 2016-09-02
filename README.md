@@ -28,4 +28,5 @@ To release a new version spec
 git add *
 git commit -m "Describe the changes"
 git tag -a v0.11 -m "Describe the version"
+git push --tags
 ```
