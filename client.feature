@@ -69,16 +69,18 @@ Feature: Complete challenge
 
   Scenario: Handle multi-line request and response
     Given I receive the following requests:
-      | {"method":"echo","params":["a"],"id":"X1"}      |
-      | {"method":"echo","params":["x\ny"],"id":"X2"}      |
-      | {"method":"echo","params":["p\nq\nr"],"id":"X3"}      |
+      | {"method":"echo","params":[""],"id":"X1"}      |
+      | {"method":"echo","params":["a"],"id":"X2"}      |
+      | {"method":"echo","params":["x\ny"],"id":"X3"}      |
+      | {"method":"echo","params":["p\nq\nr"],"id":"X4"}      |
     When I go live with the following processing rules:
       |   Method     |      Call          |  Action           |
       | echo         | echo the request   | publish           |
     Then the client should display to console:
-      | id = X1, req = echo("a"), resp = "a"   |
-      | id = X2, req = echo("x .. ( 1 more line )"), resp = "x .. ( 1 more line )" |
-      | id = X3, req = echo("p .. ( 2 more lines )"), resp = "p .. ( 2 more lines )" |
+      | id = X1, req = echo(""), resp = ""   |
+      | id = X2, req = echo("a"), resp = "a"   |
+      | id = X3, req = echo("x .. ( 1 more line )"), resp = "x .. ( 1 more line )" |
+      | id = X4, req = echo("p .. ( 2 more lines )"), resp = "p .. ( 2 more lines )" |
 
 
   #  Handle edge cases

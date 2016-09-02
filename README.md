@@ -20,3 +20,12 @@ popd
 # Commit
 git commit $SPEC_LOCATION -m "Added spec submodule"
 ```
+
+
+To release a new version spec
+
+```bash
+git add *
+git commit -m "Describe the changes"
+git tag -a v0.11 -m "Describe the version"
+```
