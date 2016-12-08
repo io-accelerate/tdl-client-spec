@@ -142,5 +142,6 @@ Feature: Complete challenge
     When I go live with the following processing rules:
       |   Method     |      Call        |  Action           |
     Then the client should display to console:
-      | Starting client |
-      | Stopping client |
+      | Starting client      |
+      | Waiting for requests |
+      | Stopping client      |
