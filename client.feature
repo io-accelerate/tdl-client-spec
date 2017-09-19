@@ -9,7 +9,7 @@ Feature: Complete challenge
 
   Scenario: Process message then publish
     Given I receive the following requests:
-	  |                   Request                      |
+      |                   Request                      |
       | {"method":"sum","params":[1,2],"id":"X1"}      |
       | {"method":"increment","params":[3],"id":"X2"}  |
     When I go live with the following processing rules:
@@ -18,13 +18,13 @@ Feature: Complete challenge
       | increment    | increment number | publish           |
     Then the client should consume all requests
     And the client should publish the following responses:
-	  |              Response               |
+      |              Response               |
       | {"result":3,"error":null,"id":"X1"} |
       | {"result":4,"error":null,"id":"X2"} |
 
   Scenario: Process message then stop
     Given I receive the following requests:
-	  |                  Request                       |
+      |                  Request                       |
       | {"method":"sum","params":[1,2],"id":"X1"}      |
       | {"method":"increment","params":[3],"id":"X2"}  |
     When I go live with the following processing rules:
@@ -36,7 +36,7 @@ Feature: Complete challenge
 
   Scenario: Process messages then publish and stop
     Given I receive the following requests:
-	  |                  Request                       |
+      |                  Request                       |
       | {"method":"sum","params":[1,2],"id":"X1"}      |
       | {"method":"increment","params":[3],"id":"X2"}  |
     When I go live with the following processing rules:
@@ -45,7 +45,7 @@ Feature: Complete challenge
       | increment    | increment number | publish           |
     Then the client should consume first request
     And the client should publish the following responses:
-	  |               Response              |
+      |               Response              |
       | {"result":3,"error":null,"id":"X1"} |
 
 
@@ -53,7 +53,7 @@ Feature: Complete challenge
 
   Scenario: Display requests and responses
     Given I receive the following requests:
-	  |                  Request                       |
+      |                  Request                       |
       | {"method":"sum","params":[1,2],"id":"X1"}      |
       | {"method":"increment","params":[3],"id":"X2"}  |
     When I go live with the following processing rules:
@@ -61,24 +61,24 @@ Feature: Complete challenge
       | sum          | add two numbers  | publish           |
       | increment    | increment number | publish and stop  |
     Then the client should display to console:
-	  |               Response                 |
+      |               Response                 |
       | id = X1, req = sum(1, 2), resp = 3     |
       | id = X2, req = increment(3), resp = 4  |
 
   Scenario: Display label next to unpublished responses
     Given I receive the following requests:
-	  |                  Request                       |
+      |                  Request                       |
       | {"method":"sum","params":[1,2],"id":"X1"}      |
     When I go live with the following processing rules:
       |   Method     |      Call        |  Action           |
       | sum          | add two numbers  | stop              |
     Then the client should display to console:
-	  |                    Response                         |
+      |                    Response                         |
       | id = X1, req = sum(1, 2), resp = 3, (NOT PUBLISHED) |
 
   Scenario: Handle multi-line request and response
     Given I receive the following requests:
-	  |                  Request                         |
+      |                  Request                         |
       | {"method":"echo","params":[""],"id":"X1"}        |
       | {"method":"echo","params":["a"],"id":"X2"}       |
       | {"method":"echo","params":["x\ny"],"id":"X3"}    |
@@ -87,7 +87,7 @@ Feature: Complete challenge
       |   Method     |      Call          |  Action           |
       | echo         | echo the request   | publish           |
     Then the client should display to console:
-	  |                             Response                                         |
+      |                             Response                                         |
       | id = X1, req = echo(""), resp = ""                                           |
       | id = X2, req = echo("a"), resp = "a"                                         |
       | id = X3, req = echo("x .. ( 1 more line )"), resp = "x .. ( 1 more line )"   |
@@ -98,19 +98,19 @@ Feature: Complete challenge
 
   Scenario: Should consume null requests
     Given I receive the following requests:
-	  |                  Request                  |
+      |                  Request                  |
       | {"method":"sum","params":[0,1],"id":"X1"} |
     When I go live with the following processing rules:
       |   Method     |      Call        |  Action           |
       | sum          | return null      | publish           |
     Then the client should consume all requests
     And the client should publish the following responses:
-	  |               Response                 |
+      |               Response                 |
       | {"result":null,"error":null,"id":"X1"} |
 
   Scenario: Should stop on exceptions
     Given I receive the following requests:
-	  |                  Request                  |
+      |                  Request                  |
       | {"method":"sum","params":[0,1],"id":"X1"} |
     When I go live with the following processing rules:
       |   Method     |      Call        |  Action           |
@@ -118,19 +118,19 @@ Feature: Complete challenge
     Then the client should not consume any request
     And the client should not publish any response
     And the client should display to console:
-	  |                                  Response                                                 |
+      |                                  Response                                                 |
       | id = X1, req = sum(0, 1), error = "user implementation raised exception", (NOT PUBLISHED) |
 
   Scenario: Should display informative message if method not registered
     Given I receive the following requests:
-	  |                  Request                   |
+      |                  Request                   |
       | {"method":"random","params":[2],"id":"X1"} |
     When I go live with the following processing rules:
       |   Method     |      Call        |  Action           |
       | sum          | add two numbers  | publish           |
     Then the client should not consume any request
     And the client should display to console:
-	  |                                  Response                                                              |
+      |                                  Response                                                              |
       | id = X1, req = random(2), error = "method 'random' did not match any processing rule", (NOT PUBLISHED) |
 
 
@@ -148,21 +148,21 @@ Feature: Complete challenge
 
   Scenario: Exit gracefully if malformed message is received
     Given I receive the following requests:
-	  |     Request       |
+      |     Request       |
       | malformed_request |
     When I go live with the following processing rules:
       |   Method     |      Call        |  Action           |
       | some_method  |  some logic      | publish           |
     Then I should get no exception
     And the client should display to console:
-	  |       Response         |
+      |       Response         |
       | Invalid message format |
 
   Scenario: Should display informative message when starting and stopping client
     When I go live with the following processing rules:
       |   Method     |      Call        |  Action           |
     Then the client should display to console:
-	  |      Response        |
+      |      Response        |
       | Starting client      |
       | Waiting for requests |
       | Stopping client      |
