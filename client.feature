@@ -143,7 +143,7 @@ Feature: Complete challenge
       | some_method  |  some logic      | publish           |
     Then I should get no exception
     And the client should display to console:
-	  |                Response                 |
+      |                Response                 |
       | There was a problem processing messages |
 
   Scenario: Exit gracefully if malformed message is received
