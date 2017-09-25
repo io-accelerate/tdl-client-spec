@@ -61,7 +61,7 @@ Feature: Complete challenge
       | sum          | add two numbers  | publish           |
       | increment    | increment number | publish and stop  |
     Then the client should display to console:
-      | #Payload                               |
+      | #Output                                |
       | id = X1, req = sum(1, 2), resp = 3     |
       | id = X2, req = increment(3), resp = 4  |
 
