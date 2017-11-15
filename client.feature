@@ -4,7 +4,7 @@ Feature: Command and control using a message broker
     Given I start with a clean broker and a client for user "testuser"
 
   Scenario: Default client setting
-    Then the time to wait for requests is 200ms
+    Then the time to wait for requests is 500ms
     Then the request queue is "testuser.req"
     Then the response queue is "testuser.resp"
 
@@ -143,16 +143,14 @@ Feature: Command and control using a message broker
       | payload                                   |
       | {"method":"slow","params":[0],"id":"X1"}  |
       | {"method":"slow","params":[1],"id":"X2"}  |
-      | {"method":"slow","params":[2],"id":"X3"}  |
     When I go live with the following processing rules:
       | method       | call            | action            |
-      | slow         | work for 200ms  | publish           |
+      | slow         | work for 500ms  | publish           |
     Then the client should consume all requests
     And the client should publish the following responses:
       | payload                             |
       | {"result":"OK","error":null,"id":"X1"} |
       | {"result":"OK","error":null,"id":"X2"} |
-      | {"result":"OK","error":null,"id":"X3"} |
 
   Scenario: Exit gracefully is broker not available
     Given the broker is not available
