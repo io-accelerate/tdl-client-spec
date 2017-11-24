@@ -145,7 +145,7 @@ Feature: Command and control using a message broker
       | {"method":"slow","params":[1],"id":"X2"}  |
     When I go live with the following processing rules:
       | method       | call            | action            |
-      | slow         | work for 500ms  | publish           |
+      | slow         | work for 600ms  | publish           |
     Then the client should consume all requests
     And the client should publish the following responses:
       | payload                             |
