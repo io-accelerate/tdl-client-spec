@@ -136,6 +136,18 @@ Feature: Command and control using a message broker
       | output                                                                                                 |
       | id = X1, req = random(2), error = "method 'random' did not match any processing rule", (NOT PUBLISHED) |
 
+  #  Performance
+
+  Scenario: Should have a decent performance
+    Given I receive 50 identical requests like:
+      | payload                                        |
+      | {"method":"some_method","params":[],"id":"X1"} |
+    When I go live with the following processing rules:
+      | method       | call             | action            |
+      | some_method  |  some logic      | publish           |
+    Then the client should consume all requests
+    And the processing time should be lower than 5000ms
+
   #  Handle possible failures
 
   Scenario: Should not timeout prematurely
