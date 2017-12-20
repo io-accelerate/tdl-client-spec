@@ -25,7 +25,7 @@ Feature: Should allow the user to interact with the challenge server
     Given the action input comes from a provider returning "anySuccessful"
     And the challenges folder is empty
     When user starts client
-    Then the server interaction should contains the following lines:
+    Then the server interaction should look like:
       """
       Connecting to localhost
       Journey progress coming from server
@@ -52,7 +52,7 @@ Feature: Should allow the user to interact with the challenge server
     And there is an implementation runner that prints "Running implementations"
     When user starts client
     Then the implementation runner should be run with the provided implementations
-    And the server interaction should contains the following lines:
+    And the server interaction should contain the following lines:
       """
       Selected action is: deploy
       Running implementations
@@ -77,7 +77,7 @@ Feature: Should allow the user to interact with the challenge server
   Scenario: challenge server is returning a client error
     Given the challenge server returns 400, response body "Nothing here" for all requests
     When user starts client
-    And the server interaction should contains the following lines:
+    Then the server interaction should contain the following lines:
       """
       Nothing here
       """
@@ -85,7 +85,7 @@ Feature: Should allow the user to interact with the challenge server
   Scenario: challenge server is returning a server error
     Given the challenge server returns 500 for all requests
     When user starts client
-    And the server interaction should contains the following lines:
+    Then the server interaction should contain the following lines:
       """
       Server experienced an error. Try again in a few minutes.
       """
@@ -93,10 +93,7 @@ Feature: Should allow the user to interact with the challenge server
   Scenario: challenge server is returning an unknown error
     Given the challenge server returns 301 for all requests
     When user starts client
-    And the server interaction should contains the following lines:
+    Then the server interaction should contain the following lines:
       """
       Client threw an unexpected error. Try again.
       """
-#
-#  # DEBT
-#  Scenario: the journeyId should be URL safe
