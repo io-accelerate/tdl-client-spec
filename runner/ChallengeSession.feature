@@ -72,14 +72,17 @@ Feature: Should allow the user to interact with the challenge server
     Given recording server is returning error
     When user starts client
     Then the client should not ask the user for input
-    And the user is informed that they should start the recording
+    And the server interaction should contain the following lines:
+      """
+      Please run `record_screen_and_upload` before continuing.
+      """
 
   Scenario: challenge server is returning a client error
-    Given the challenge server returns 400, response body "Nothing here" for all requests
+    Given the challenge server returns 400, response body "Error message coming from server" for all requests
     When user starts client
     Then the server interaction should contain the following lines:
       """
-      Nothing here
+      Error message coming from server
       """
 
   Scenario: challenge server is returning a server error
