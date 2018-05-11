@@ -59,6 +59,20 @@ Feature: Should allow the user to interact with the challenge server
       """
     And the recording system should be notified with "RoundID/deploy"
 
+  Scenario: Notify recording of successful round completion
+    Given the action input comes from a provider returning "deploy"
+    And the challenge server exposes the following endpoints
+      | verb       | endpointEquals              | status  | responseBody        | acceptHeader  |
+      | POST       | /action/deploy/aJourneyId   | 200     | Round time for ...  | text/coloured |
+    When user starts client
+    And the server interaction should contain the following lines:
+      """
+      Selected action is: deploy
+      Round time for ...
+      """
+    And the recording system should be notified with "RoundID/done"
+
+
   # Negative paths
 
   Scenario: Should exit when no available actions
