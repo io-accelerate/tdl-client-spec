@@ -65,7 +65,7 @@ Feature: Should allow the user to interact with the challenge server
       | verb       | endpointEquals              | status  | responseBody        | acceptHeader  |
       | POST       | /action/deploy/aJourneyId   | 200     | Round time for ...  | text/coloured |
     When user starts client
-    And the server interaction should contain the following lines:
+    Then the server interaction should contain the following lines:
       """
       Selected action is: deploy
       Round time for ...
