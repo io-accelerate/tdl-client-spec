@@ -23,7 +23,7 @@ The queue system is used to serve requests and receive responses, while the chal
 
 ## Include Spec in language client
 
-To include the spec in your client:
+The best way to use the Spec is to include it as Git submodule in your language client and then run the Spec with the Cucumber library associated with the language.
 
 ```bash
 export SPEC_LOCATION=./src/test/resources/tdl/client/
@@ -42,6 +42,10 @@ popd
 # Commit
 git commit $SPEC_LOCATION -m "Added spec submodule"
 ```
+
+In order to have a complete setup, I recommend stubbing the external dependencies using:
+- A test copy of the ActiveMq broker: https://github.com/julianghionoiu/tdl-client-test-broker
+- Wiremock to represent the challenge server: https://github.com/julianghionoiu/tdl-client-test-wiremock
 
 
 ## To release a new version spec
