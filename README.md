@@ -10,6 +10,16 @@ The queue system is used to serve requests and receive responses, while the chal
 
 ![Queue system](./challenge_system.png)
 
+## Supported protocols
+
+| Protocol              | Port   |
+| --------------------- | ------ |
+| OpenWire              | 61616  |
+| AMQP 1.0              | 5672   |
+| STOMP                 | 61613  |
+| STOMP over WebSockets | 61614  |
+| MQTT                  | 1883   |
+
 
 ## Include Spec in language client
 
