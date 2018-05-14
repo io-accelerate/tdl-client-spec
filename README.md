@@ -1,5 +1,17 @@
 # tdl-client-spec
-Describes the contract
+
+Describes the interaction between the client and the challenge server.
+
+The interaction has two major components:
+1. A queue system ( `./queue/QueueRunner.feature` )
+2. A challenge session API ( `./runner/ChallengeSession.feature` )
+
+The queue system is used to serve requests and receive responses, while the challenge API is used to manage to workflow and receive feedback.
+
+(challenge_system.png)
+
+
+## Include Spec in language client
 
 To include the spec in your client:
 
@@ -22,7 +34,7 @@ git commit $SPEC_LOCATION -m "Added spec submodule"
 ```
 
 
-To release a new version spec
+## To release a new version spec
 
 ```bash
 git add *
