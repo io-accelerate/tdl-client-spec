@@ -8,7 +8,7 @@ The interaction has two major components:
 
 The queue system is used to serve requests and receive responses, while the challenge API is used to manage to workflow and receive feedback.
 
-(challenge_system.png)
+![Queue system](./raw/master/challenge_system.png)
 
 
 ## Include Spec in language client
