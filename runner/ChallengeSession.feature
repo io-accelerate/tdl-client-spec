@@ -50,6 +50,7 @@ Feature: Should allow the user to interact with the challenge server
   Scenario: Deploy code to production and display feedback
     Given the action input comes from a provider returning "deploy"
     And there is an implementation runner that prints "Running implementations"
+    And the current round is "RoundID"
     When user starts client
     Then the implementation runner should be run with the provided implementations
     And the server interaction should contain the following lines:
@@ -64,6 +65,7 @@ Feature: Should allow the user to interact with the challenge server
     And the challenge server exposes the following endpoints
       | verb       | endpointEquals              | status  | responseBody        | acceptHeader  |
       | POST       | /action/deploy/aJourneyId   | 200     | Round time for ...  | text/coloured |
+    And the current round is "RoundID"
     When user starts client
     Then the server interaction should contain the following lines:
       """
