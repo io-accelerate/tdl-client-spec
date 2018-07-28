@@ -18,6 +18,7 @@ Feature: Should allow the user to interact with the challenge server
       | verb       | endpointEquals    | status   | responseBody   |
       | GET        | /status           | 200      | OK             |
       | POST       | /notify           | 200      | ACK            |
+      | POST       | /stop             | 200      | ACK            |
 
   # Business critical scenarios
 
@@ -50,7 +51,6 @@ Feature: Should allow the user to interact with the challenge server
   Scenario: Deploy code to production and display feedback
     Given the action input comes from a provider returning "deploy"
     And there is an implementation runner that prints "Running implementations"
-    And the current round is "RoundID"
     When user starts client
     Then the implementation runner should be run with the provided implementations
     And the server interaction should contain the following lines:
@@ -65,7 +65,6 @@ Feature: Should allow the user to interact with the challenge server
     And the challenge server exposes the following endpoints
       | verb       | endpointEquals              | status  | responseBody        | acceptHeader  |
       | POST       | /action/deploy/aJourneyId   | 200     | Round time for ...  | text/coloured |
-    And the current round is "RoundID"
     When user starts client
     Then the server interaction should contain the following lines:
       """
@@ -74,8 +73,20 @@ Feature: Should allow the user to interact with the challenge server
       """
     And the recording system should be notified with "RoundID/done"
 
+  Scenario: Should stop recording system on challenge completion
+    Given the action input comes from a provider returning "deploy"
+    And the challenge server exposes the following endpoints
+      | verb       | endpointEquals              | status  | responseBody                        | acceptHeader  |
+      | POST       | /action/deploy/aJourneyId   | 200     | All challenges have been completed  | text/coloured |
+    When user starts client
+    Then the recording system should have received a stop signal
 
-  # Negative paths
+  Scenario: Should stop recording system when no available actions
+    Given the challenge server exposes the following endpoints
+      | verb       | endpointEquals                | status  | responseBody             | acceptHeader  |
+      | GET        | /availableActions/aJourneyId  | 200     | No actions available.    | text/coloured |
+    When user starts client
+    Then the recording system should have received a stop signal
 
   Scenario: Should exit when no available actions
     Given the challenge server exposes the following endpoints
@@ -83,6 +94,8 @@ Feature: Should allow the user to interact with the challenge server
       | GET        | /availableActions/aJourneyId  | 200     | No actions available.    | text/coloured |
     When user starts client
     Then the client should not ask the user for input
+
+  # Negative paths
 
   Scenario: Should exit if recording not available
     Given recording server is returning error
