@@ -99,8 +99,8 @@ Feature: Command and control using a message broker
     And the client should publish the following responses:
       | payload                                |
       | {"result":null,"error":null,"id":"X1"} |
-  
-  Scenario: Should publish after single message
+
+  Scenario: Should not publish after an exception when processing a message
     Given I receive the following requests:
       | payload                                   |
       | {"method":"sum","params":[0,1],"id":"X1"} |
@@ -110,8 +110,8 @@ Feature: Command and control using a message broker
     Then the client should not consume any request
     And the client should not publish any response
     And the client should display to console:
-      | output                                                                   |
-      | id = X1, req = sum(0, 1), error = "user implementation raised exception" |
+      | output                                                                                    |
+      | id = X1, req = sum(0, 1), error = "user implementation raised exception", (NOT PUBLISHED) |
   
   Scenario: Should display informative message if method not registered
     Given I receive the following requests:
@@ -122,8 +122,8 @@ Feature: Command and control using a message broker
       | sum          | add two numbers  |
     Then the client should not consume any request
     And the client should display to console:
-      | output                                                                                |
-      | id = X1, req = random(2), error = "method 'random' did not match any processing rule" |
+      | output                                                                                                 |
+      | id = X1, req = random(2), error = "method 'random' did not match any processing rule", (NOT PUBLISHED) |
 
   #  Performance
   
