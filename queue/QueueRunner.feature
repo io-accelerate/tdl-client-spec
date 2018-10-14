@@ -5,9 +5,7 @@ Feature: Command and control using a message broker
 
   Scenario: Default client setting
     Then the time to wait for requests is 500ms
-    Then the request queue is "testuser-req"
-    Then the response queue is "testuser-resp"
-
+    
   #  Message processing rules
 
   Scenario: Process message then publish
