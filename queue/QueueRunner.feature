@@ -40,21 +40,6 @@ Feature: Command and control using a message broker
       | {"result":3,"error":null,"id":"X1"} |
       | {"result":4,"error":null,"id":"X2"} |
 
-  Scenario: Process messages then publish them all
-    Given I receive the following requests:
-      | payload                                        |
-      | {"method":"sum","params":[1,2],"id":"X1"}      |
-      | {"method":"increment","params":[3],"id":"X2"}  |
-    When I go live with the following processing rules:
-      | method       | call             |
-      | sum          | add two numbers  |
-      | increment    | increment number |
-    Then the client should consume all requests
-    And the client should publish the following responses:
-      | payload                             |
-      | {"result":3,"error":null,"id":"X1"} |
-      | {"result":4,"error":null,"id":"X2"} |
-
 
   #  Display
   
