@@ -1,11 +1,12 @@
 Feature: Command and control using a message broker
 
   Background:
-    Given I start with a clean broker and a client for user "testuser"
+    Given I start with a clean broker having a request and a response queue and a client that connects to the queues
+
 
   Scenario: Default client setting
     Then the time to wait for requests is 500ms
-    
+
   #  Message processing rules
 
   Scenario: Process message then publish
@@ -22,7 +23,7 @@ Feature: Command and control using a message broker
       | payload                             |
       | {"result":3,"error":null,"id":"X1"} |
       | {"result":4,"error":null,"id":"X2"} |
-  
+
   Scenario: Process messages
     Given I receive the following requests:
       | payload                                        |
@@ -38,9 +39,8 @@ Feature: Command and control using a message broker
       | {"result":3,"error":null,"id":"X1"} |
       | {"result":4,"error":null,"id":"X2"} |
 
-
   #  Display
-  
+
   Scenario: Display requests and responses
     Given I receive the following requests:
       | payload                                        |
@@ -54,7 +54,7 @@ Feature: Command and control using a message broker
       | output                                 |
       | id = X1, req = sum(1, 2), resp = 3     |
       | id = X2, req = increment(3), resp = 4  |
-  
+
   Scenario: Display published response
     Given I receive the following requests:
       | payload                                        |
@@ -65,7 +65,7 @@ Feature: Command and control using a message broker
     Then the client should display to console:
       | output                                         |
       | id = X1, req = sum(1, 2), resp = 3             |
-  
+
   Scenario: Handle multi-line request and response
     Given I receive the following requests:
       | payload                                          |
@@ -85,7 +85,7 @@ Feature: Command and control using a message broker
 
 
   #  Cover edge cases
-  
+
   Scenario: Should consume null requests
     Given I receive the following requests:
       | payload                                   |
@@ -110,7 +110,7 @@ Feature: Command and control using a message broker
     And the client should display to console:
       | output                                                                                    |
       | id = X1, req = sum(0, 1), error = "user implementation raised exception", (NOT PUBLISHED) |
-  
+
   Scenario: Should display informative message if method not registered
     Given I receive the following requests:
       | payload                                    |
@@ -124,7 +124,7 @@ Feature: Command and control using a message broker
       | id = X1, req = random(2), error = "method 'random' did not match any processing rule", (NOT PUBLISHED) |
 
   #  Performance
-  
+
   Scenario: Should have a decent performance
     Given I receive 50 identical requests like:
       | payload                                        |
@@ -136,7 +136,7 @@ Feature: Command and control using a message broker
     And the processing time should be lower than 5000ms
 
   #  Handle possible failures
-  
+
   Scenario: Should not timeout prematurely
     Given I receive the following requests:
       | payload                                   |
@@ -150,8 +150,8 @@ Feature: Command and control using a message broker
       | payload                             |
       | {"result":"OK","error":null,"id":"X1"} |
       | {"result":"OK","error":null,"id":"X2"} |
-  
-  Scenario: Exit gracefully is broker not available
+
+  Scenario: Exit gracefully if broker not available
     Given the broker is not available
     When I go live with the following processing rules:
       | method       | call                    |
@@ -160,7 +160,7 @@ Feature: Command and control using a message broker
     And the client should display to console:
       | output                                  |
       | There was a problem processing messages |
-  
+
   Scenario: Exit gracefully if malformed message is received
     Given I receive the following requests:
       | payload           |
@@ -172,7 +172,7 @@ Feature: Command and control using a message broker
     And the client should display to console:
       | output                 |
       | Invalid message format |
-  
+
   Scenario: Should display informative message when starting and stopping client
     When I go live with the following processing rules:
       | method       | call              |
