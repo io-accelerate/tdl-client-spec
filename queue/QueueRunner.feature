@@ -1,13 +1,12 @@
 Feature: Command and control using a message broker
 
   Background:
-    Given I start with a clean broker having a request and a reponse queue
-    And a client that connects to the queues
+    Given I start with a clean broker for user "testuser" having a request and a response queue and a client that connects to the queues
 
 
   Scenario: Default client setting
     Then the time to wait for requests is 500ms
-    
+
   #  Message processing rules
 
   Scenario: Process message then publish
@@ -24,7 +23,6 @@ Feature: Command and control using a message broker
       | payload                             |
       | {"result":3,"error":null,"id":"X1"} |
       | {"result":4,"error":null,"id":"X2"} |
-
 
   #  Display
 
