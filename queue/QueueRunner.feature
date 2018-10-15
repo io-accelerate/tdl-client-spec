@@ -1,7 +1,7 @@
 Feature: Command and control using a message broker
 
   Background:
-    Given I start with a clean broker having a request and a response queue and a client that connects to the queues
+    Given I start with a clean broker for user "testuser" having a request and a response queue and a client that connects to the queues
 
 
   Scenario: Default client setting
