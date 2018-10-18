@@ -85,6 +85,23 @@ Feature: Command and control using a message broker
       | output                                                                                    |
       | id = X1, req = sum(0, 1), error = "user implementation raised exception", (NOT PUBLISHED) |
 
+  Scenario: Should not publish any more messages after an exception when processing a message
+    Given I receive the following requests:
+      | payload                                        |
+      | {"method":"increment","params":[1],"id":"X1"}  |
+      | {"method":"sum","params":[0,1],"id":"X2"}      |
+      | {"method":"increment","params":[2],"id":"X3"}  |
+    When I go live with the following processing rules:
+      | method       | call             |
+      | increment    | increment number |
+      | sum          | throw exception  |
+    Then the client should consume one request
+    And the client should publish one response
+    And the client should display to console:
+      | output                                                                                    |
+      | id = X1, req = increment(1), resp = 2                                                     |
+      | id = X2, req = sum(0, 1), error = "user implementation raised exception", (NOT PUBLISHED) |
+
   Scenario: Should display informative message if method not registered
     Given I receive the following requests:
       | payload                                    |
