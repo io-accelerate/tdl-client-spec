@@ -72,19 +72,6 @@ Feature: Command and control using a message broker
       | payload                                |
       | {"result":null,"error":null,"id":"X1"} |
 
-  Scenario: Should not publish after an exception when processing a message
-    Given I receive the following requests:
-      | payload                                   |
-      | {"method":"sum","params":[0,1],"id":"X1"} |
-    When I go live with the following processing rules:
-      | method       | call            |
-      | sum          | throw exception |
-    Then the client should not consume any request
-    And the client should not publish any response
-    And the client should display to console:
-      | output                                                                                    |
-      | id = X1, req = sum(0, 1), error = "user implementation raised exception", (NOT PUBLISHED) |
-
   Scenario: Should not publish any more messages after an exception when processing a message
     Given I receive the following requests:
       | payload                                        |
