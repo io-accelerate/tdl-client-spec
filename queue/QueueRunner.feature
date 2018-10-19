@@ -6,7 +6,7 @@ Feature: Command and control using a message broker
 
   Scenario: Default client setting
     Then the time to wait for requests is 500ms
-    
+
   #  Message processing rules
 
   Scenario: Process message then publish
@@ -72,18 +72,22 @@ Feature: Command and control using a message broker
       | payload                                |
       | {"result":null,"error":null,"id":"X1"} |
 
-  Scenario: Should not publish after an exception when processing a message
+  Scenario: Should not publish any more messages after an exception when processing a message
     Given I receive the following requests:
-      | payload                                   |
-      | {"method":"sum","params":[0,1],"id":"X1"} |
+      | payload                                        |
+      | {"method":"increment","params":[1],"id":"X1"}  |
+      | {"method":"sum","params":[0,1],"id":"X2"}      |
+      | {"method":"increment","params":[2],"id":"X3"}  |
     When I go live with the following processing rules:
-      | method       | call            |
-      | sum          | throw exception |
-    Then the client should not consume any request
-    And the client should not publish any response
+      | method       | call             |
+      | increment    | increment number |
+      | sum          | throw exception  |
+    Then the client should consume one request
+    And the client should publish one response
     And the client should display to console:
       | output                                                                                    |
-      | id = X1, req = sum(0, 1), error = "user implementation raised exception", (NOT PUBLISHED) |
+      | id = X1, req = increment(1), resp = 2                                                     |
+      | id = X2, req = sum(0, 1), error = "user implementation raised exception", (NOT PUBLISHED) |
 
   Scenario: Should display informative message if method not registered
     Given I receive the following requests:
