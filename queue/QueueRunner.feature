@@ -9,20 +9,26 @@ Feature: Command and control using a message broker
 
   #  Message processing rules
 
-  Scenario: Process message then publish
+  Scenario: Processes requests and publishes responses for various methods
     Given I receive the following requests:
-      | payload                                        |
-      | {"method":"sum","params":[1,2],"id":"X1"}      |
-      | {"method":"increment","params":[3],"id":"X2"}  |
+      | payload                                             |
+      | {"method":"sum","params":[1,2],"id":"X1"}           |
+      | {"method":"echo","params":["a"],"id":"X2"}          |
+      | {"method":"array_sum","params":[[1,2,3]],"id":"X3"} |
+      | {"method":"int_range","params":[1,4],"id":"X4"}     |
     When I go live with the following processing rules:
-      | method       | call             |
-      | sum          | add two numbers  |
-      | increment    | increment number |
+      | method       | call                         |
+      | sum          | add two numbers              |
+      | echo         | replay the value             |
+      | array_sum    | sum the elements of an array |
+      | int_range    | generate array of integers   |
     Then the client should consume all requests
     And the client should publish the following responses:
-      | payload                             |
-      | {"result":3,"error":null,"id":"X1"} |
-      | {"result":4,"error":null,"id":"X2"} |
+      | payload                               |
+      | {"result":3,"error":null,"id":"X1"}   |
+      | {"result":"a","error":null,"id":"X2"} |
+      | {"result":6,"error":null,"id":"X3"}   |
+      | {"result":[1,2,3],"error":null,"id":"X4"}   |
 
   #  Display
 
@@ -49,7 +55,7 @@ Feature: Command and control using a message broker
       | {"method":"echo","params":["p\nq\nr"],"id":"X4"} |
     When I go live with the following processing rules:
       | method       | call              |
-      | echo         | echo the request  |
+      | echo         | replay the value  |
     Then the client should display to console:
       | output                                                                       |
       | id = X1, req = echo(""), resp = ""                                           |
