@@ -5,7 +5,7 @@ Feature: Command and control using a message broker
     And a client that connects to the queues
 
   Scenario: Default client setting
-    Then the time to wait for requests is at least 500ms
+    Then the time to wait for requests is 500ms
 
   #  Message processing rules
 
