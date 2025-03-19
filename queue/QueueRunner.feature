@@ -11,24 +11,30 @@ Feature: Command and control using a message broker
 
   Scenario: Processes requests and publishes responses for various methods
     Given I receive the following requests:
-      | payload                                             |
-      | {"method":"sum","params":[1,2],"id":"X1"}           |
-      | {"method":"echo","params":["Xs"],"id":"X2"}         |
-      | {"method":"array_sum","params":[[1,2,3]],"id":"X3"} |
-      | {"method":"int_range","params":[1,4],"id":"X4"}     |
+      | payload                                                                          |
+      | {"method":"sum","params":[1,2],"id":"X1"}                                        |
+      | {"method":"echo","params":["Xs"],"id":"X2"}                                      |
+      | {"method":"array_sum","params":[[1,2,3]],"id":"X3"}                              |
+      | {"method":"int_range","params":[1,4],"id":"X4"}                                  |
+      | {"method":"object_to_string","params":[{"field1":"xyz","field2":111}],"id":"X5"} |
+      | {"method":"object_create","params":["xyz", 111],"id":"X6"}                       |
     When I go live with the following processing rules:
-      | method    | call                         |
-      | sum       | add two numbers              |
-      | echo      | replay the value             |
-      | array_sum | sum the elements of an array |
-      | int_range | generate array of integers   |
+      | method           | call                            |
+      | sum              | add two numbers                 |
+      | echo             | replay the value                |
+      | array_sum        | sum the elements of an array    |
+      | int_range        | generate array of integers      |
+      | object_to_string | concatenate fields as string    |
+      | object_create    | build an object with two fields |
     Then the client should consume all requests
     And the client should publish the following responses:
-      | payload                                   |
-      | {"result":3,"error":null,"id":"X1"}       |
-      | {"result":"Xs","error":null,"id":"X2"}    |
-      | {"result":6,"error":null,"id":"X3"}       |
-      | {"result":[1,2,3],"error":null,"id":"X4"} |
+      | payload                                                         |
+      | {"result":3,"error":null,"id":"X1"}                             |
+      | {"result":"Xs","error":null,"id":"X2"}                          |
+      | {"result":6,"error":null,"id":"X3"}                             |
+      | {"result":[1,2,3],"error":null,"id":"X4"}                       |
+      | {"result":"xyz111","error":null,"id":"X5"}                      |
+      | {"result":{"field1":"xyz","field2":111},"error":null,"id":"X6"} |
 
   #  Display
 
@@ -77,6 +83,21 @@ Feature: Command and control using a message broker
       | id = X3, req = array_sum([1, 2, 3]), resp = 6    |
       | id = X4, req = int_range(1, 4), resp = [1, 2, 3] |
 
+  Scenario: Handle object input and output
+    Given I receive the following requests:
+      | payload                                                                          |
+      | {"method":"object_to_string","params":[{"field1":"xyz","field2":111}],"id":"X5"} |
+      | {"method":"object_create","params":["xyz", 111],"id":"X6"}                       |
+    When I go live with the following processing rules:
+      | method           | call                            |
+      | object_to_string | concatenate fields as string    |
+      | object_create    | build an object with two fields |
+    Then the client should display to console:
+      | output                                               |
+      | id = X5, req = object_to_string({"field1":"xyz","field2":111}), resp = "xyz111" |
+      | id = X6, req = object_create("xyz", 111), resp = {"field1":"xyz","field2":111}  |
+
+    
   #  Cover edge cases
 
   Scenario: Should consume null requests
