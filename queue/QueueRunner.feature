@@ -18,6 +18,7 @@ Feature: Command and control using a message broker
       | {"method":"int_range","params":[1,4],"id":"X4"}                                  |
       | {"method":"object_to_string","params":[{"field1":"xyz","field2":111}],"id":"X5"} |
       | {"method":"object_create","params":["xyz", 111],"id":"X6"}                       |
+      | {"method":"map_get","params":[{"key1":"value1","key2":"value2"}],"id":"X7"}      |
     When I go live with the following processing rules:
       | method           | call                            |
       | sum              | add two numbers                 |
@@ -26,6 +27,7 @@ Feature: Command and control using a message broker
       | int_range        | generate array of integers      |
       | object_to_string | concatenate fields as string    |
       | object_create    | build an object with two fields |
+      | map_get          | retrieve a value from a map     |
     Then the client should consume all requests
     And the client should publish the following responses:
       | payload                                                         |
@@ -35,6 +37,7 @@ Feature: Command and control using a message broker
       | {"result":[1,2,3],"error":null,"id":"X4"}                       |
       | {"result":"xyz111","error":null,"id":"X5"}                      |
       | {"result":{"field1":"xyz","field2":111},"error":null,"id":"X6"} |
+      | {"result":"value1","error":null,"id":"X7"}                      |
 
   #  Display
 
@@ -93,9 +96,20 @@ Feature: Command and control using a message broker
       | object_to_string | concatenate fields as string    |
       | object_create    | build an object with two fields |
     Then the client should display to console:
-      | output                                               |
+      | output                                                                          |
       | id = X5, req = object_to_string({"field1":"xyz","field2":111}), resp = "xyz111" |
       | id = X6, req = object_create("xyz", 111), resp = {"field1":"xyz","field2":111}  |
+
+  Scenario: Handle map input
+    Given I receive the following requests:
+      | payload                                                                          |
+      | {"method":"map_get","params":[{"key1":"value1","key2":"value2"}],"id":"X7"}      |
+    When I go live with the following processing rules:
+      | method           | call                            |
+      | map_get          | retrieve a value from a map     |
+    Then the client should display to console:
+      | output                                                                       |
+      | id = X7, req = map_get({"key1":"value1","key2":"value2"}), resp = "value1"   |
 
     
   #  Cover edge cases
