@@ -53,6 +53,6 @@ In order to have a complete setup, I recommend stubbing the external dependencie
 ```bash
 git add *
 git commit -m "Describe the changes"
-git tag -a v0.28 -m "Describe the version"
+git tag -a v0.31 -m "Describe the version"
 git push --tags
 ```
